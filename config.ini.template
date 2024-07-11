@@ -1,11 +1,8 @@
-[database]
-db_user = 
-db_password = 
-db_host = db
-db_database = rbl
-
-[settings]
-RBL_DOMAIN = mydomain.com
-NS_PUBLIC_IP_ADDRESS = xx.xx.xx.xx
+DB_USER = user
+DB_PASSWORD = password
+DB_HOST = db
+DB_NAME = rbl
+RBL_DOMAIN = FQDN.com
+NS_PUBLIC_IP_ADDRESS = x.x.x.x
 URL_EXT_IP_ADDRESSES_BLACKLIST = https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt
 URL_EXT_DOMAINS_BLACKLIST = https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt

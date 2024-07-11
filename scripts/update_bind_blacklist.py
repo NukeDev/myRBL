@@ -2,10 +2,7 @@ import mysql.connector # type: ignore
 import subprocess
 import logging
 import datetime
-import configparser
-
-config = configparser.ConfigParser()
-config.read('/scripts/config.ini')
+import os
 
 logging.basicConfig(
     format='%(asctime)s - [update_bind_blacklist.py] %(message)s',
@@ -13,14 +10,14 @@ logging.basicConfig(
 )
 
 db_config = {
-    'user': config['database']['db_user'],
-    'password': config['database']['db_password'],
-    'host': config['database']['db_host'],
-    'database': config['database']['db_name']
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'database': os.getenv('DB_NAME')
 }
 
-RBL_DOMAIN = config['settings']['RBL_DOMAIN']
-NS_PUBLIC_IP_ADDRESS = config['settings']['NS_PUBLIC_IP_ADDRESS']
+RBL_DOMAIN = os.getenv('RBL_DOMAIN')
+NS_PUBLIC_IP_ADDRESS = os.getenv('NS_PUBLIC_IP_ADDRESS')
 
 
 def restart_named():

@@ -1,15 +1,13 @@
 import mysql.connector # type: ignore
 import logging
-import configparser
+import os
 
-config = configparser.ConfigParser()
-config.read('/scripts/config.ini')
 
 db_config = {
-    'user': config['database']['db_user'],
-    'password': config['database']['db_password'],
-    'host': config['database']['db_host'],
-    'database': config['database']['db_name']
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'database': os.getenv('DB_NAME')
 }
 
 

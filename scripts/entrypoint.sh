@@ -14,21 +14,6 @@ trap 'handle_error $LINENO' ERR
 
 log_timestamp  "Starting entrypoint.sh..."
 
-CONFIG_FILE="/scripts/config.ini"
-
-function read_ini() {
-    SECTION=$1
-    KEY=$2
-    echo $(awk -F '=' -v section=$SECTION -v key=$KEY '
-        $0 ~ "\\[" section "\\]" { in_section=1 }
-        in_section && $0 ~ key "[[:space:]]*=" { print $2; exit }
-        $0 ~ "\\[.*\\]" { in_section=0 }
-    ' $CONFIG_FILE | tr -d ' ')
-}
-
-
-RBL_DOMAIN=$(read_ini "settings" "RBL_DOMAIN")
-
 rndc-confgen -a -b 512 -c /etc/bind/rndc.key
 chown root:bind /etc/bind/rndc.key
 chmod 640 /etc/bind/rndc.key

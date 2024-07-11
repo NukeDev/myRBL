@@ -8,7 +8,6 @@ RUN pip3 install -r /scripts/requirements.txt
 
 COPY scripts/update_bind_blacklist.py /scripts/update_bind_blacklist.py
 COPY scripts/update_db_ext_blacklist.py /scripts/update_db_ext_blacklist.py
-COPY scripts/config.ini /scripts/config.ini
 COPY scripts/init_config.py /scripts/init_config.py
 COPY scripts/create_database.py /scripts/create_database.py
 COPY config/named.conf.local /etc/bind/named.conf.local

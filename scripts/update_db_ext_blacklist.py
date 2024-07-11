@@ -4,20 +4,17 @@ from mysql.connector import errorcode # type: ignore
 import subprocess
 import logging
 import datetime
-import configparser
-
-config = configparser.ConfigParser()
-config.read('/scripts/config.ini')
+import os
 
 db_config = {
-    'user': config['database']['db_user'],
-    'password': config['database']['db_password'],
-    'host': config['database']['db_host'],
-    'database': config['database']['db_name']
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'database': os.getenv('DB_NAME')
 }
 
-URL_EXT_IP_ADDRESSES_BLACKLIST = config['settings']['URL_EXT_IP_ADDRESSES_BLACKLIST']
-URL_EXT_DOMAINS_BLACKLIST = config['settings']['URL_EXT_DOMAINS_BLACKLIST']
+URL_EXT_IP_ADDRESSES_BLACKLIST = os.getenv('URL_EXT_IP_ADDRESSES_BLACKLIST')
+URL_EXT_DOMAINS_BLACKLIST = os.getenv('URL_EXT_DOMAINS_BLACKLIST')
 
 
 logging.basicConfig(

@@ -3,16 +3,25 @@ services:
     image: mysql:latest
     container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: $$db_password
-      MYSQL_DATABASE: $$db_name
-      MYSQL_USER: $$db_user
-      MYSQL_PASSWORD: $$db_password
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
 
   bind:
     build: .
     container_name: bind_dns
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      RBL_DOMAIN: ${RBL_DOMAIN}
+      NS_PUBLIC_IP_ADDRESS: ${NS_PUBLIC_IP_ADDRESS}
+      URL_EXT_IP_ADDRESSES_BLACKLIST: ${URL_EXT_IP_ADDRESSES_BLACKLIST}
+      URL_EXT_DOMAINS_BLACKLIST: ${URL_EXT_DOMAINS_BLACKLIST}
     ports:
       - "53:53/udp"
       - "53:53/tcp"
@@ -28,8 +37,8 @@ services:
       - "8080:80"
     environment:
       PMA_HOST: db
-      PMA_USER: $$db_user
-      PMA_PASSWORD: $$db_password
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - db
 

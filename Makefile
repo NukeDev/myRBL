@@ -1,19 +1,17 @@
-.PHONY: configure up down build all
-CONFIG_FILE := scripts/config.ini
+include config.ini
 
-configure:
-	@echo "Configuring environment variables from $(CONFIG_FILE)"
-	@while IFS='=' read -r key value || [ -n "$$key" ]; do \
-		key=$$(echo $$key | tr -d '[:space:]'); \
-		value=$$(echo $$value | tr -d '[:space:]'); \
-		if [ "$$key" ] && [ "$$value" ] && ! echo "$$key" | grep -q '^#'; then \
-			export $$key="$$value"; \
-			echo "export $$key=\"$$value\""; \
-		fi; \
-	done < $(CONFIG_FILE)
+export DB_USER := $(DB_USER)
+export DB_PASSWORD := $(DB_PASSWORD)
+export DB_HOST := $(DB_HOST)
+export DB_NAME := $(DB_NAME)
+export RBL_DOMAIN := $(RBL_DOMAIN)
+export NS_PUBLIC_IP_ADDRESS := $(NS_PUBLIC_IP_ADDRESS)
+export URL_EXT_IP_ADDRESSES_BLACKLIST := $(URL_EXT_IP_ADDRESSES_BLACKLIST)
+export URL_EXT_DOMAINS_BLACKLIST := $(URL_EXT_DOMAINS_BLACKLIST)
 
+.PHONY: up down build all
 
-up: configure
+up: 
 	@echo "Starting docker-compose..."
 	@docker-compose up -d
 
