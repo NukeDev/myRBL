@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: $$db_password
+      MYSQL_DATABASE: $$db_name
+      MYSQL_USER: $$db_user
+      MYSQL_PASSWORD: $$db_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  bind:
+    build: .
+    container_name: bind_dns
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    depends_on:
+      - db
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: $$db_user
+      PMA_PASSWORD: $$db_password
+    depends_on:
+      - db
+
+
+volumes:
+  db_data:

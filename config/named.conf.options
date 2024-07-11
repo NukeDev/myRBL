@@ -1,0 +1,43 @@
+options {
+    directory "/var/cache/bind";
+
+    listen-on { any; };
+
+    allow-query { any; };
+
+    statistics-file "/var/log/named.stats";
+
+    recursion no;
+    dnssec-validation auto;
+
+    auth-nxdomain no;    #RFC 1035
+};
+
+// Logging
+logging {
+    channel default_log {
+        file "/var/log/named/named.log" versions 3 size 5m;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    category default { default_log; };
+    category general { default_log; };
+    category database { default_log; };
+    category security { default_log; };
+    category config { default_log; };
+    category resolver { default_log; };
+    category xfer-in { default_log; };
+    category xfer-out { default_log; };
+    category notify { default_log; };
+    category client { default_log; };
+    category unmatched { default_log; };
+    category queries { default_log; };
+    category network { default_log; };
+    category update { default_log; };
+    category dispatch { default_log; };
+    category dnssec { default_log; };
+    category lame-servers { default_log; };
+};
