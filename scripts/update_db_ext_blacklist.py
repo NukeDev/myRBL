@@ -1,3 +1,22 @@
+# =============================================================================
+# myRBL Dockerized
+# 
+# Copyright (C) 2024 [NukeDev - Gianmarco Varriale]
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# =============================================================================
+
 import requests
 import mysql.connector # type: ignore
 from mysql.connector import errorcode # type: ignore
@@ -13,7 +32,7 @@ db_config = {
     'database': os.getenv('DB_NAME')
 }
 
-URL_EXT_IP_ADDRESSES_BLACKLIST = os.getenv('URL_EXT_IP_ADDRESSES_BLACKLIST')
+STAMPARM_URL_EXT_IP_ADDRESSES_BLACKLIST = os.getenv('STAMPARM_URL_EXT_IP_ADDRESSES_BLACKLIST')
 URL_EXT_DOMAINS_BLACKLIST = os.getenv('URL_EXT_DOMAINS_BLACKLIST')
 
 
@@ -66,6 +85,10 @@ def create_tables_if_not_exists():
 
 def fetch_and_process_file_ip(url):
     try:
+        logging.info(f"Processing STAMPARM_URL_EXT_IP_ADDRESSES_BLACKLIST = {url}")
+        if url == "":
+            logging.warning("No URL found in env.")
+            return None
         response = requests.get(url)
         response.raise_for_status()  
         file_content = response.text
@@ -85,6 +108,10 @@ def fetch_and_process_file_ip(url):
     
 def fetch_and_process_file_domains(url):
     try:
+        logging.info(f"Processing URL_EXT_DOMAINS_BLACKLIST = {url}")
+        if url == "":
+            logging.warning("No URL found in env.")
+            return None
         response = requests.get(url)
         response.raise_for_status()  
         file_content = response.text
@@ -143,10 +170,12 @@ def main():
     create_tables_if_not_exists()
     logging.info("Tables data deleted! Fetching data...")
     domains = fetch_and_process_file_domains(URL_EXT_DOMAINS_BLACKLIST)
-    ips = fetch_and_process_file_ip(URL_EXT_IP_ADDRESSES_BLACKLIST)
+    ips = fetch_and_process_file_ip(STAMPARM_URL_EXT_IP_ADDRESSES_BLACKLIST)
     logging.info("Data downloaded! Updating database...")
-    insert_ips_to_mysql(ips)
-    insert_domains_to_mysql(domains)
+    if domains is not None:
+        insert_domains_to_mysql(domains)
+    if ips is not None:
+        insert_ips_to_mysql(ips)
     logging.info("Data updated!")
 
 if __name__ == "__main__":
