@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    server_name rbl.${RBL_DOMAIN};
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name rbl.${RBL_DOMAIN};
+
+    ssl_certificate /etc/letsencrypt/live/rbl.${RBL_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/rbl.${RBL_DOMAIN}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass php:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}

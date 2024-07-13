@@ -78,6 +78,7 @@ def main():
     IN      NS      ns1.rbl.{RBL_DOMAIN}.
 
 ns1.rbl.{RBL_DOMAIN}.     IN      A       {NS_PUBLIC_IP_ADDRESS}
+rbl.{RBL_DOMAIN}.     IN      A       {NS_PUBLIC_IP_ADDRESS}
 """
     
     domainsAdded = 0

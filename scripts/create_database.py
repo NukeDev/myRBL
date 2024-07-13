@@ -48,6 +48,24 @@ CREATE TABLE IF NOT EXISTS ip_blacklist (
 )
 """
 
+create_reports_ip_table = """
+CREATE TABLE IF NOT EXISTS ip_reports (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_address VARCHAR(255),
+    motivation VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+"""
+
+create_reports_domains_table = """
+CREATE TABLE IF NOT EXISTS domain_reports (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    domain VARCHAR(255),
+    motivation VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+"""
+
 def create_database_and_tables():
     try:
         connection = mysql.connector.connect(**db_config)
@@ -58,6 +76,8 @@ def create_database_and_tables():
 
         cursor.execute(create_domain_blacklist_table)
         cursor.execute(create_ip_blacklist_table)
+        cursor.execute(create_reports_domains_table)
+        cursor.execute(create_reports_ip_table)
 
         connection.commit()
         logging.info("Tables created/checked.")

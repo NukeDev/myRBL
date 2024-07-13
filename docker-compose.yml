@@ -20,7 +20,7 @@
 services:
   db:
     image: mysql:latest
-    container_name: mysql_db
+    container_name: db_server
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -31,7 +31,7 @@ services:
 
   bind:
     build: .
-    container_name: bind_dns
+    container_name: dns_server
     environment:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -65,7 +65,50 @@ services:
     depends_on:
       - db
 
+  php:
+    build:
+      context: ./web
+      dockerfile: Dockerfile-php
+    container_name: php_server
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      RBL_DOMAIN: ${RBL_DOMAIN}
+      NS_PUBLIC_IP_ADDRESS: ${NS_PUBLIC_IP_ADDRESS}
+    depends_on:
+      - bind
+    volumes:
+      - ./web/public-html:/var/www/html
+
+  nginx:
+    build:
+      context: ./web
+      dockerfile: Dockerfile-nginx
+    container_name: nginx_server
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      RBL_DOMAIN: ${RBL_DOMAIN}
+      NS_PUBLIC_IP_ADDRESS: ${NS_PUBLIC_IP_ADDRESS}
+      CERTBOT_EMAIL: ${CERTBOT_EMAIL}
+      USE_SSL: ${USE_SSL}
+    depends_on:
+      - bind
+    volumes:
+      - ./web/public-html:/var/www/html
+      - letsencrypt-etc:/etc/letsencrypt
+      - letsencrypt-var:/var/lib/letsencrypt
+
 
 volumes:
   db_data:
   bind_cache:
+  letsencrypt-etc:
+  letsencrypt-var:
