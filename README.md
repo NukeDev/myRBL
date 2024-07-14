@@ -1,5 +1,7 @@
  # myRBL Dockerized
 
+<a href="https://discord.gg/MYpbmNrvgc"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
+
 ## Project Description
 myRBL Dockerized is an open-source project that enables the creation and management of a DNS RBL (Realtime Blackhole List) server to identify and block IP addresses and domains associated with spam and other malicious activities. Leveraging Docker, myRBL Dockerized provides a scalable and easy-to-deploy solution for system administrators and developers, offering an efficient way to secure email infrastructures and enhance network security.
 
