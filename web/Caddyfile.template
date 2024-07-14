@@ -1,0 +1,28 @@
+{
+    # Global options
+    log {
+        output file /var/log/caddy/access.log
+        format json
+        level INFO
+    }
+}
+
+# HTTP configuration
+http://rbl.${RBL_DOMAIN} {
+    root * /var/www/html
+    php_fastcgi php:9000
+    file_server
+
+    log {
+        output file /var/log/caddy/rbl-http.log
+        format json
+    }
+}
+
+# Default catch-all for IP-based access
+:80 {
+    respond "OK"
+}
+
+# HTTPS configuration (this will be conditionally included)
+# HTTPS_CONFIGURATION_BLOCK

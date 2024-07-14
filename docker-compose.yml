@@ -30,7 +30,8 @@ services:
       - db_data:/var/lib/mysql
 
   bind:
-    build: .
+    build: 
+      context: ./rbl
     container_name: dns_server
     environment:
       DB_USER: ${DB_USER}
@@ -80,13 +81,13 @@ services:
     depends_on:
       - bind
     volumes:
-      - ./web/public-html:/var/www/html
+      - ./web/www:/var/www/html
 
-  nginx:
+  caddy:
     build:
       context: ./web
-      dockerfile: Dockerfile-nginx
-    container_name: nginx_server
+      dockerfile: Dockerfile-caddy
+    container_name: caddy_server
     ports:
       - "80:80"
       - "443:443"
@@ -102,13 +103,17 @@ services:
     depends_on:
       - bind
     volumes:
-      - ./web/public-html:/var/www/html
-      - letsencrypt-etc:/etc/letsencrypt
-      - letsencrypt-var:/var/lib/letsencrypt
+      - ./web/www:/var/www/html
+      - ./web/logs:/var/log/caddy
+      - caddy_data:/data
+      - caddy_config:/config
+      - caddy_certs:/etc/ssl/caddy
+    entrypoint: ["/bin/sh", "-c", "envsubst < /etc/caddy/Caddyfile.template > /etc/caddy/Caddyfile && caddy run --config /etc/caddy/Caddyfile"]
 
 
 volumes:
   db_data:
   bind_cache:
-  letsencrypt-etc:
-  letsencrypt-var:
+  caddy_data:
+  caddy_config:
+  caddy_certs:
