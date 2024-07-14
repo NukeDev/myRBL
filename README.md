@@ -14,7 +14,32 @@ myRBL Dockerized is an open-source project that enables the creation and managem
 - Open Source: Source code available to the community, promoting collaboration and continuous project improvement.
 
 ## Additional Objective
-In addition to providing the open-source code for everyone, our goal is to host this RBL accessible to anyone (Rspamd, Spamassassin...), which will happen as soon as we release the first stable version.
+In addition to providing the open-source code for everyone, our goal is to host this RBL accessible to anyone (Rspamd, Spamassassin...).
+
+## Using  MyRBL at rbl.l2m.io
+The RBL (Real-time Blackhole List) at rbl.l2m.io allows you to check whether a domain or IP address is listed as malicious or spammy. This service can be integrated into your applications or scripts to enhance security measures.
+
+### How to Use
+To query the RBL, you need to perform DNS lookups against rbl.l2m.io by appending the domain or IP address you want to check.
+
+### Querying Domains
+To check if a domain is listed:
+
+```bash
+$ dig example.com.rbl.l2m.io A +short
+```
+If the domain example.com is blacklisted, this query will return an IP address (**127.0.0.2**). If not blacklisted, it returns nothing.
+
+### Querying IP Addresses
+For IP addresses, you first need to reverse the octets and append .rbl.l2m.io:
+
+```bash
+$ dig 1.2.0.192.rbl.l2m.io A +short
+```
+This will return **127.0.0.2** if the IP 192.0.2.1 is blacklisted.
+
+## Integration
+Integrate these queries into your application or script to automatically block or flag malicious domains or IPs based on their status in the RBL.
 
 ## Getting Started
 - Clone the Repository: Download the source code from the GitHub repository.
