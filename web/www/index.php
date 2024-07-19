@@ -26,7 +26,9 @@
 <html>
 <head>
     <title>MyRBL - <?php echo getenv('RBL_DOMAIN')?> Dashboard</title>
-    <style>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+
+    <!--style>
         body {
             display: flex;
             justify-content: center;
@@ -55,15 +57,21 @@
         .home-link:hover {
             text-decoration: underline;
         }
-    </style>
+    </style-->
 </head>
+<header>
+<h1>MyRBL - rbl.<?php echo getenv('RBL_DOMAIN')?></h1>
+</header>
 <body>
-    <h1>MyRBL - rbl.<?php echo getenv('RBL_DOMAIN')?></h1>
+    
     <ul>
         <li><a href="check_blacklist.php">Check if IP/Domain is blacklisted</a></li>
         <li><a href="report_spam.php">Report IP/Domain as spam</a></li>
         <!--li><a href="/">View Statistics</a></li-->
     </ul>
 </body>
+<footer>
 <?php include 'footer.php'; ?>
+</footer>
+
 </html>

@@ -25,7 +25,7 @@
 <html>
 <head>
     <style>
-        .footer {
+        /*.footer {
             text-align: center;
             padding: 20px;
             background-color: #f1f1f1;
@@ -34,7 +34,7 @@
             bottom: 0;
             width: 100%;
             font-family: Arial, sans-serif;
-        }
+        }*/
         .footer p {
             margin: 5px 0;
             font-size: 14px;
@@ -59,7 +59,7 @@
         <p>
             <a href="https://github.com/NukeDev/MyRBL" target="_blank">
                 <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" class="github-icon">
-                NukeDev/MyRBL
+                <mark>NukeDev/MyRBL</mark>
             </a>
         </p>
         <p>

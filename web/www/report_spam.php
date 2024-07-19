@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $value_to_check = $value;
     } else {
         $invalidFormat = true;
-        $message = "Invalid IP/Domain format.";
+        $message = "<code>Invalid IP/Domain format.</code>";
     }
     if (!$invalidFormat) {
         $stmt = $conn->prepare("INSERT INTO $table ($column, motivation) VALUES (?, ?)");
@@ -52,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
     
         if ($stmt->affected_rows > 0) {
-            $message = "The IP/Domain '$value' has been reported successfully.";
+            $message = "<code>The IP/Domain '$value' has been reported successfully.</code>";
         } else {
-            $message = "There was an error reporting the IP/Domain '$value'.";
+            $message = "<code>There was an error reporting the IP/Domain '$value'.</code>";
         }
     
         $stmt->close();
@@ -78,7 +78,8 @@ $conn->close();
 <html>
 <head>
     <title>Report IP/Domain Spam</title>
-    <style>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <!--style>
         body {
             display: flex;
             justify-content: center;
@@ -107,11 +108,14 @@ $conn->close();
         .home-link:hover {
             text-decoration: underline;
         }
-    </style>
+    </style-->
 </head>
+<header>
+<h1>MyRBL - rbl.<?php echo getenv('RBL_DOMAIN')?></h1>
+</header>
 <body>
     <div class="container">
-        <h1>Report IP/Domain Spam</h1>
+        <h4>Report IP/Domain Spam</h4>
         <form method="post">
             <div class="form-group">
                 <label for="value">IP/Domain:</label>
@@ -124,15 +128,20 @@ $conn->close();
             <button type="submit">Report</button>
         </form>
         <?php if ($message): ?>
+            </br>
             <div class="result">
+                
                 <?php echo $message; ?>
                 <?php if ($report_count > 0): ?>
-                    <p>This IP/Domain has been reported <?php echo $report_count; ?> times.</p>
+                    </br><code>This IP/Domain has been reported <?php echo $report_count; ?> times.</code>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        </br>
         <a class="home-link" href="/">&larr; Go back to homepage</a>
     </div>
 </body>
+<footer>
 <?php include 'footer.php'; ?>
+</footer>
 </html>

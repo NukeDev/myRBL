@@ -26,7 +26,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Blacklist</title>
-    <style>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <!-- <style>
         body {
             display: flex;
             justify-content: center;
@@ -53,17 +54,21 @@
         .home-link:hover {
             text-decoration: underline;
         }
-    </style>
+    </style> -->
 </head>
+<header>
+<h1>MyRBL - rbl.<?php echo getenv('RBL_DOMAIN')?></h1>
+</header>
 <body>
     <div class="container">
-        <h1>Check if IP/Domain is blacklisted</h1>
+        <h4>Check if IP/Domain is blacklisted</h4>
         <form id="checkForm">
             <input type="text" id="value" name="value" required>
             <button type="submit">Check</button>
         </form>
-        <div id="message" class="result"></div>
-        <a class="home-link" href="/">&larr; Go back to homepage</a>
+        </br>
+        <code id="message" class="result"></code></br></br>
+        <a class="home-link" href="/" style="margin: top 2px;">&larr; Go back to homepage</a>
     </div>
     <script>
         document.getElementById('checkForm').addEventListener('submit', function(event) {
@@ -96,6 +101,8 @@
                 });
         });
     </script>
-    <?php include 'footer.php'; ?>
 </body>
+<footer>
+<?php include 'footer.php'; ?>
+</footer>
 </html>
