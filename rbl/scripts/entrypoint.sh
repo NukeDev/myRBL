@@ -57,8 +57,14 @@ python3 /scripts/update_db_ext_blacklist.py
 log_timestamp "Running Python script, update_bind_blacklist"
 python3 /scripts/update_bind_blacklist.py
 
-(echo "$BIND_REFRESH_BLACKLIST_CRONJOB python3 /scripts/update_bind_blacklist.py") | crontab -
-(echo "$EXT_BLACKLIST_CRONJOB python3 /scripts/update_db_ext_blacklist.py") | crontab -
+temp_cron=$(mktemp)
+
+echo "$BIND_REFRESH_BLACKLIST_CRONJOB python3 /scripts/update_bind_blacklist.py" >> $temp_cron
+echo "$EXT_BLACKLIST_CRONJOB python3 /scripts/update_db_ext_blacklist.py" >> $temp_cron
+
+crontab $temp_cron
+
+rm $temp_cron
 
 log_timestamp "Container is running..."
 tail -f /dev/null
